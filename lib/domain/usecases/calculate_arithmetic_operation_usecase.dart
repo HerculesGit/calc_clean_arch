@@ -13,55 +13,47 @@ class CalculateArithmeticOperationUseCase
   Future<String> call({required List<String> params}) async {
     arithmeticOperations = params;
 
-    return calcArithmeticOperations(params);
+    return calcArithmeticOperations();
   }
 
-  String calcArithmeticOperations(List<String> array) {
-    if (array.isEmpty) return '0';
+  String calcArithmeticOperations() {
+    if (arithmeticOperations.isEmpty) return '0';
 
-    int index = searchSymbol(ArithmeticSymbol.product, array);
+    int index = searchSymbol(ArithmeticSymbol.product);
     if (index >= 0) {
-      array = calcValuesFromSymbol(
-          symbolIndex: index,
-          arithmeticSymbol: ArithmeticSymbol.product,
-          array: array);
-      calcArithmeticOperations(array);
+      calcValuesFromSymbol(
+          symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.product);
+      calcArithmeticOperations();
     }
 
-    index = searchSymbol(ArithmeticSymbol.sum, array);
+    index = searchSymbol(ArithmeticSymbol.sum);
     if (index >= 0) {
-      array = calcValuesFromSymbol(
-          symbolIndex: index,
-          arithmeticSymbol: ArithmeticSymbol.sum,
-          array: array);
-      calcArithmeticOperations(array);
+      calcValuesFromSymbol(
+          symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.sum);
+      calcArithmeticOperations();
     }
 
-    index = searchSymbol(ArithmeticSymbol.difference, array);
+    index = searchSymbol(ArithmeticSymbol.difference);
     if (index >= 0) {
-      array = calcValuesFromSymbol(
-          symbolIndex: index,
-          arithmeticSymbol: ArithmeticSymbol.difference,
-          array: array);
-      calcArithmeticOperations(array);
+      calcValuesFromSymbol(
+          symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.difference);
+      calcArithmeticOperations();
     }
 
-    return array.first;
+    return arithmeticOperations.first;
   }
 
-  List<String> calcValuesFromSymbol(
-      {required int symbolIndex,
-      required ArithmeticSymbol arithmeticSymbol,
-      required List<String> array}) {
+  void calcValuesFromSymbol(
+      {required int symbolIndex, required ArithmeticSymbol arithmeticSymbol}) {
     const String markToRemove = '@';
     final start = symbolIndex - 1;
     final end = symbolIndex + 1;
 
-    final int numberA = int.parse(_getNumberBeforeOperatorSymbol(
-        symbolIndex: symbolIndex, list: array));
+    final int numberA =
+        int.parse(_getNumberBeforeOperatorSymbol(symbolIndex: symbolIndex));
 
-    final int numberB = int.parse(_getNumberAfterOperatorSymbol(
-        symbolIndex: symbolIndex, list: array));
+    final int numberB =
+        int.parse(_getNumberAfterOperatorSymbol(symbolIndex: symbolIndex));
 
     int result = 0;
     switch (arithmeticSymbol) {
@@ -77,27 +69,24 @@ class CalculateArithmeticOperationUseCase
       default:
         result = 0;
     }
-    array[symbolIndex] = result.toString();
-    array[start] = markToRemove;
-    array[end] = markToRemove;
+    arithmeticOperations[symbolIndex] = result.toString();
+    arithmeticOperations[start] = markToRemove;
+    arithmeticOperations[end] = markToRemove;
 
-    array.removeWhere((val) => val == markToRemove);
-    return array;
+    arithmeticOperations.removeWhere((val) => val == markToRemove);
   }
 
-  int searchSymbol(ArithmeticSymbol arithmeticSymbol, List<String> array) =>
-      array.indexOf(arithmeticSymbol.label);
+  int searchSymbol(ArithmeticSymbol arithmeticSymbol) =>
+      arithmeticOperations.indexOf(arithmeticSymbol.label);
 
   /// e.g [[1,x,2,+,3]] <br>
   /// [symbolIndex] = 1<br>
   /// returns = 1
-  String _getNumberBeforeOperatorSymbol(
-      {required int symbolIndex, required List<String> list}) {
-    return list.elementAt(symbolIndex - 1);
+  String _getNumberBeforeOperatorSymbol({required int symbolIndex}) {
+    return arithmeticOperations.elementAt(symbolIndex - 1);
   }
 
-  String _getNumberAfterOperatorSymbol(
-      {required int symbolIndex, required List<String> list}) {
-    return list.elementAt(symbolIndex + 1);
+  String _getNumberAfterOperatorSymbol({required int symbolIndex}) {
+    return arithmeticOperations.elementAt(symbolIndex + 1);
   }
 }
