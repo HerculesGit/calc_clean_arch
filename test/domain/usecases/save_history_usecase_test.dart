@@ -8,7 +8,7 @@ class HistoryRepositorySpy extends Mock implements HistoryRepository {}
 
 void main() {
   group('SaveHistory use case', () {
-    test('should call save history repository with correct', () async {
+    test('should call save history method in repository', () async {
       final historyRepositorySpy = HistoryRepositorySpy();
       final historyEntity = HistoryEntity('asd');
       final sut = SaveHistoryUseCase(historyRepositorySpy);
