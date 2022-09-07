@@ -57,10 +57,10 @@ class CalculateArithmeticOperationUseCase
     final start = symbolIndex - 1;
     final end = symbolIndex + 1;
 
-    final int numberA = int.parse(_getLeftNumberBetweenOperatorSymbol(
+    final int numberA = int.parse(_getNumberBeforeOperatorSymbol(
         symbolIndex: symbolIndex, list: array));
 
-    final int numberB = int.parse(_getRightNumberBetweenOperatorSymbol(
+    final int numberB = int.parse(_getNumberAfterOperatorSymbol(
         symbolIndex: symbolIndex, list: array));
 
     int result = 0;
@@ -91,12 +91,12 @@ class CalculateArithmeticOperationUseCase
   /// e.g [[1,x,2,+,3]] <br>
   /// [symbolIndex] = 1<br>
   /// returns = 1
-  String _getLeftNumberBetweenOperatorSymbol(
+  String _getNumberBeforeOperatorSymbol(
       {required int symbolIndex, required List<String> list}) {
     return list.elementAt(symbolIndex - 1);
   }
 
-  String _getRightNumberBetweenOperatorSymbol(
+  String _getNumberAfterOperatorSymbol(
       {required int symbolIndex, required List<String> list}) {
     return list.elementAt(symbolIndex + 1);
   }
