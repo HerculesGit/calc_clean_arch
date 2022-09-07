@@ -1,44 +1,49 @@
+import 'package:calc_clean_arch/domain/usecases/usecase.dart';
+
 import '../enums/arithmetic_symbol.dart';
 import 'addition_use_case.dart';
 import 'multiplication_use_case.dart';
 import 'subtraction_use_case.dart';
-import 'usecase.dart';
 
-class ExtractStringToArithmeticOperationsUseCase
-    implements UseCase<String, String> {
+class CalculateArithmeticOperationUseCase
+    implements UseCase<List<String>, String> {
+  late List<String> arithmeticOperations;
+
   @override
-  Future<String> call({required String params}) async {
-    return extractInArithmeticOperations(convertStringTermsInList(params));
+  Future<String> call({required List<String> params}) async {
+    arithmeticOperations = params;
+
+    return calcArithmeticOperations(params);
   }
 
-  String extractInArithmeticOperations(List<String> array) {
+  String calcArithmeticOperations(List<String> array) {
     if (array.isEmpty) return '0';
 
-    int index = searchToProduct(array);
+    int index = searchSymbol(ArithmeticSymbol.product, array);
     if (index >= 0) {
       array = calcValuesFromSymbol(
           symbolIndex: index,
           arithmeticSymbol: ArithmeticSymbol.product,
           array: array);
-      extractInArithmeticOperations(array);
+      calcArithmeticOperations(array);
     }
 
-    index = searchToSum(array);
+    index = searchSymbol(ArithmeticSymbol.sum, array);
     if (index >= 0) {
       array = calcValuesFromSymbol(
           symbolIndex: index,
           arithmeticSymbol: ArithmeticSymbol.sum,
           array: array);
-      extractInArithmeticOperations(array);
+      calcArithmeticOperations(array);
     }
 
-    index = searchToDifference(array);
+    index = searchSymbol(ArithmeticSymbol.difference, array);
     if (index >= 0) {
       array = calcValuesFromSymbol(
           symbolIndex: index,
           arithmeticSymbol: ArithmeticSymbol.difference,
           array: array);
-      extractInArithmeticOperations(array);
+      calcArithmeticOperations(array);
     }
 
     return array.first;
@@ -82,63 +87,6 @@ class ExtractStringToArithmeticOperationsUseCase
 
   int searchSymbol(ArithmeticSymbol arithmeticSymbol, List<String> array) =>
       array.indexOf(arithmeticSymbol.label);
-
-  int searchToProduct(List<String> array) {
-    for (int index = 0; index < array.length; index++) {
-      String letter = array[index];
-      if (letter == 'x') {
-        return index;
-      }
-    }
-
-    return -1;
-  }
-
-  int searchToSum(List<String> array) {
-    for (int index = 0; index < array.length; index++) {
-      String letter = array[index];
-      if (letter == '+') {
-        return index;
-      }
-    }
-
-    return -1;
-  }
-
-  int searchToDifference(List<String> array) {
-    for (int index = 0; index < array.length; index++) {
-      String letter = array[index];
-      if (letter == '-') {
-        return index;
-      }
-    }
-
-    return -1;
-  }
-
-  List<String> convertStringTermsInList(final String arithmeticOperations) {
-    final List<String> terms = [];
-
-    String newTerm = '';
-    for (int index = 0; index < arithmeticOperations.length; index++) {
-      String term = arithmeticOperations[index];
-
-      int position =
-          ArithmeticSymbol.values.indexWhere((symbol) => symbol.label == term);
-
-      /// if there is not a symbol
-      if (position == -1) {
-        newTerm = '$newTerm$term';
-      } else {
-        terms.add(newTerm);
-        terms.add(term);
-        newTerm = '';
-      }
-    }
-    terms.add(newTerm);
-
-    return terms;
-  }
 
   /// e.g [[1,x,2,+,3]] <br>
   /// [symbolIndex] = 1<br>
