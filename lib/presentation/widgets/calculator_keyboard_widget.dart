@@ -4,7 +4,7 @@ import '../../config/themes.dart';
 import '../view_models/view_models.dart';
 
 class CalculatorKeyboardWidget extends StatelessWidget {
-  final Function(String character) onButtonTapped;
+  final Function(KeyboardViewModel key) onButtonTapped;
 
   const CalculatorKeyboardWidget({Key? key, required this.onButtonTapped})
       : super(key: key);
@@ -43,7 +43,9 @@ class CalculatorKeyboardWidget extends StatelessWidget {
         margin: const EdgeInsets.all(4.0),
         color: Colors.red,
         child: GestureDetector(
-          onTap: () => onButtonTapped(keyboardViewModel.key),
+          onTap: () => keyboardViewModel.enabled
+              ? onButtonTapped(keyboardViewModel)
+              : () {},
           child: Text(
             keyboardViewModel.key,
             textAlign: TextAlign.center,

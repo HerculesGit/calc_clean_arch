@@ -1,4 +1,5 @@
 import 'package:calc_clean_arch/domain/enums/arithmetic_symbol.dart';
+import 'package:calc_clean_arch/presentation/view_models/view_models.dart';
 import 'package:flutter/material.dart';
 
 import '../services/basic_calculator_service.dart';
@@ -11,7 +12,13 @@ class BasicCalculatorController extends ChangeNotifier {
   String result = '';
   String inputTerm = '';
 
-  changeTerms(final String newCharacter) {
+  changeTerms(final KeyboardViewModel keyTapped) {
+    if (keyTapped.isClearButton) {
+      _clearDisplay();
+      return;
+    }
+
+    String newCharacter = keyTapped.key;
     _normalizeInputTerm(newCharacter);
 
     int lastIndex = ArithmeticSymbol.values
@@ -19,6 +26,12 @@ class BasicCalculatorController extends ChangeNotifier {
     if (lastIndex == -1) {
       _automaticCalculate(newCharacter);
     }
+  }
+
+  void _clearDisplay() {
+    result = '';
+    inputTerm = '';
+    notifyListeners();
   }
 
   Future<void> _automaticCalculate(final String newCharacter) async {
