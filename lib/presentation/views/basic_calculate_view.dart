@@ -1,6 +1,7 @@
+import 'package:calc_clean_arch/config/themes.dart';
+import 'package:calc_clean_arch/presentation/view_models/view_models.dart';
 import 'package:flutter/material.dart';
 
-import '../../config/themes.dart';
 import '../widgets/calculator_display_widget.dart';
 
 class BasicCalculateView extends StatelessWidget {
@@ -15,8 +16,6 @@ class BasicCalculateView extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        print(constraints);
-
         return Column(
           children: [
             SizedBox(
@@ -24,8 +23,8 @@ class BasicCalculateView extends StatelessWidget {
                 height: constraints.maxHeight * .4,
                 width: constraints.maxWidth,
                 child: const CalculatorDisplayWidget()),
-            Container(
-                color: Colors.green,
+            SizedBox(
+                // color: Colors.green,
                 height: constraints.maxHeight * .6,
                 width: constraints.maxWidth,
                 child: _buildKeyboard(context)),
@@ -36,6 +35,41 @@ class BasicCalculateView extends StatelessWidget {
   }
 
   Widget _buildKeyboard(BuildContext context) {
-    return const SizedBox();
+    return Container(
+      padding: const EdgeInsets.only(bottom: kDefaultMargin + 20),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(25),
+          topLeft: Radius.circular(25),
+        ),
+        color: Color(0xFFEEEEEE),
+      ),
+      child: GridView.count(
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: 4,
+        shrinkWrap: true,
+        addAutomaticKeepAlives: false,
+        childAspectRatio: 2 / 1.9,
+        padding: const EdgeInsets.only(top: 32.0, bottom: kDefaultMargin),
+        children: keyboards
+            .map((keyboard) => _buildKeyboardButton(keyboard))
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _buildKeyboardButton(KeyboardViewModel keyboardViewModel) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: kDefaultMargin / 2),
+      child: Text(
+        keyboardViewModel.key,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: keyboardViewModel.lightColor,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 }
