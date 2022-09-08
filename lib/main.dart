@@ -1,9 +1,22 @@
+import 'package:calc_clean_arch/presentation/controllers/basic_calculator_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'config/routes/app_routes.dart';
+import 'inject.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) =>
+              BasicCalculatorController(initBasicServiceDependencies()),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

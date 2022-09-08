@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import '../../config/themes.dart';
 
 class CalculatorDisplayWidget extends StatelessWidget {
-  const CalculatorDisplayWidget({Key? key}) : super(key: key);
+  final String result;
+  final String term;
+
+  const CalculatorDisplayWidget(
+      {Key? key, required this.result, required this.term})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => _buildDisplay(context);
@@ -22,12 +27,12 @@ class CalculatorDisplayWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [_buildChangeThemeButton()]),
           const Spacer(),
-          const Text('308x42', style: TextStyle(fontSize: 20)),
-          const Padding(
-            padding: EdgeInsets.only(top: kDefaultMargin / 4),
+          Text(term, style: const TextStyle(fontSize: 20)),
+          Padding(
+            padding: const EdgeInsets.only(top: kDefaultMargin / 4),
             child: Text(
-              '12,936',
-              style: TextStyle(
+              '${result.isNotEmpty ? '=' : ''}$result',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 45.0,
                 color: Colors.black,

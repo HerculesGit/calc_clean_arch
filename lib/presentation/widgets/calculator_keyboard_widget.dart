@@ -4,7 +4,10 @@ import '../../config/themes.dart';
 import '../view_models/view_models.dart';
 
 class CalculatorKeyboardWidget extends StatelessWidget {
-  const CalculatorKeyboardWidget({Key? key}) : super(key: key);
+  final Function(String character) onButtonTapped;
+
+  const CalculatorKeyboardWidget({Key? key, required this.onButtonTapped})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => _buildKeyboard(context);
@@ -36,13 +39,20 @@ class CalculatorKeyboardWidget extends StatelessWidget {
   Widget _buildKeyboardButton(KeyboardViewModel keyboardViewModel) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kDefaultMargin / 2),
-      child: Text(
-        keyboardViewModel.key,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: keyboardViewModel.lightColor,
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
+      child: Container(
+        margin: const EdgeInsets.all(4.0),
+        color: Colors.red,
+        child: GestureDetector(
+          onTap: () => onButtonTapped(keyboardViewModel.key),
+          child: Text(
+            keyboardViewModel.key,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: keyboardViewModel.lightColor,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
