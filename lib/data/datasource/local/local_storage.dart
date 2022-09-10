@@ -1,7 +1,7 @@
-import 'package:calc_clean_arch/data/schemes/equation_scheme.dart';
-
 abstract class LocalStorage {
-  Future<void> saveHistory();
+  Future<void>? put(final String key, dynamic value);
 
-  Future<List<EquationScheme>> getHistory();
+  Future? get(final String key, {dynamic initialValue});
+
+  Future<void>? remove(final String key);
 }
