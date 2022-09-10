@@ -15,12 +15,15 @@ void main() {
   });
 
   test('should call setTheme method with correct key', () async {
-    await themePreferences.setTheme(false);
-    verify(localStorageSpy.put(ThemePreferences.prefsKey, false)).called(1);
+    await themePreferences.setDarkMode(false);
+    verify(localStorageSpy.put(ThemePreferences.prefsKey, false.toString()))
+        .called(1);
   });
 
   test('should call getTheme method with correct key', () async {
-    await themePreferences.getTheme();
-    verify(localStorageSpy.get(ThemePreferences.prefsKey, initialValue: false)).called(1);
+    await themePreferences.getIsDarkMode();
+    verify(localStorageSpy.get(ThemePreferences.prefsKey,
+            defaultValue: false.toString()))
+        .called(1);
   });
 }

@@ -6,13 +6,15 @@ import 'package:provider/provider.dart';
 import 'config/routes/app_routes.dart';
 import 'inject.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDependencies();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) =>
-              BasicCalculatorController(initBasicServiceDependencies()),
+          create: (context) => BasicCalculatorController(injector()),
         ),
       ],
       child: const MyApp(),
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => AppThemeController(),
+      create: (_) => AppThemeController(injector(), injector()),
       child: Consumer<AppThemeController>(
         builder: (context, appTheme, child) {
           return MaterialApp(

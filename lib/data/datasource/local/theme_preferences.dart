@@ -1,3 +1,4 @@
+import 'package:calc_clean_arch/core/extensions.dart';
 import 'package:calc_clean_arch/data/datasource/local/local_storage.dart';
 
 class ThemePreferences {
@@ -6,7 +7,13 @@ class ThemePreferences {
 
   ThemePreferences(this._localStorage);
 
-  setTheme(final bool isDark) async => _localStorage.put(prefsKey, isDark);
+  Future<void> setDarkMode(final bool isDark) async =>
+      _localStorage.put(prefsKey, isDark.toString());
 
-  getTheme() async => _localStorage.get(prefsKey, initialValue: false);
+  Future<bool> getIsDarkMode() async {
+    String? result =
+        await _localStorage.get(prefsKey, defaultValue: false.toString());
+
+    return result == null ? false : result.parseBool();
+  }
 }
