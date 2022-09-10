@@ -1,3 +1,4 @@
+import 'package:calc_clean_arch/presentation/controllers/app_theme_controller.dart';
 import 'package:calc_clean_arch/presentation/controllers/basic_calculator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,10 +25,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Calc',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      onGenerateRoute: AppRoutes.onGenerateRoutes,
+    return ChangeNotifierProvider(
+      create: (_) => AppThemeController(),
+      child: Consumer<AppThemeController>(
+        builder: (context, appTheme, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Calc',
+            theme: ThemeData(primarySwatch: Colors.blue),
+            onGenerateRoute: AppRoutes.onGenerateRoutes,
+          );
+        },
+      ),
     );
   }
 }

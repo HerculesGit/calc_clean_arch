@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/themes.dart';
+import '../controllers/app_theme_controller.dart';
 
 class CalculatorDisplayWidget extends StatelessWidget {
   final String result;
@@ -14,28 +16,29 @@ class CalculatorDisplayWidget extends StatelessWidget {
   Widget build(BuildContext context) => _buildDisplay(context);
 
   Widget _buildDisplay(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: kDefaultMargin,
         vertical: kDefaultMargin + kDefaultMargin / 2,
       ),
+      color: AppTheme.backgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [_buildChangeThemeButton()]),
+              children: [_buildChangeThemeButton(context)]),
           const Spacer(),
-          Text(term, style: const TextStyle(fontSize: 20)),
+          Text(term, style: TextStyle(fontSize: 20, color: AppTheme.textColor)),
           Padding(
             padding: const EdgeInsets.only(top: kDefaultMargin / 4),
             child: Text(
               '${result.isNotEmpty ? '=' : ''}$result',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 45.0,
-                color: Colors.black,
+                color: AppTheme.textColor,
               ),
             ),
           ),
@@ -44,20 +47,50 @@ class CalculatorDisplayWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildChangeThemeButton() {
+  Widget _buildChangeThemeButton(BuildContext context) {
+    final appTheme = Provider.of<AppThemeController>(context);
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: kDefaultMargin, vertical: kDefaultMargin / 2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: const Color(0xFFDFDEDE),
+        color: AppTheme.backgroundCardColor,
       ),
       child: Row(
-        children: const [
-          Icon(Icons.sunny),
-          SizedBox(width: kDefaultMargin),
-          Icon(Icons.nightlight_outlined, color: Color(0xFFBDBEC0)),
+        children: [
+          _buildButton(
+            context,
+            icon: Icons.sunny,
+            enabled: appTheme.isDark == false,
+            onTouch: () {
+              appTheme.isDark = false;
+            },
+          ),
+          const SizedBox(width: kDefaultMargin),
+          _buildButton(
+            enabled: appTheme.isDark == true,
+            context,
+            icon: Icons.nightlight_outlined,
+            onTouch: () {
+              appTheme.isDark = true;
+            },
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildButton(BuildContext context,
+      {required IconData icon,
+      required bool enabled,
+      required Function onTouch}) {
+    return GestureDetector(
+      onTap: () => onTouch(),
+      child: AbsorbPointer(
+        child: Icon(icon,
+            color: enabled
+                ? AppTheme.enabledAccentColor
+                : AppTheme.disabledAccentColor),
       ),
     );
   }
