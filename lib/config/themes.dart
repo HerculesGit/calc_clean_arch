@@ -11,6 +11,8 @@ class AppTheme {
     _isDark = isDark;
   }
 
+  static bool get isDark => _isDark;
+
   static Color get primaryColor {
     return (_isDark) ? const Color(0xFF18AC91) : const Color(0xFF18AC91);
   }

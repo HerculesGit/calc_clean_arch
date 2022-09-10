@@ -21,7 +21,6 @@ class CalculatorDisplayWidget extends StatelessWidget {
         horizontal: kDefaultMargin,
         vertical: kDefaultMargin + kDefaultMargin / 2,
       ),
-      color: AppTheme.backgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,

@@ -1,8 +1,10 @@
+import 'package:calc_clean_arch/presentation/controllers/app_theme_controller.dart';
 import 'package:calc_clean_arch/presentation/controllers/basic_calculator_controller.dart';
 import 'package:calc_clean_arch/presentation/widgets/calculator_keyboard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/themes.dart';
 import '../widgets/calculator_display_widget.dart';
 
 class BasicCalculateView extends StatelessWidget {
@@ -11,7 +13,13 @@ class BasicCalculateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        top: true, bottom: true, child: Scaffold(body: _buildBody(context)));
+        top: true,
+        bottom: true,
+        child: Consumer<AppThemeController>(
+          builder: (context, value, child) => Scaffold(
+              backgroundColor: AppTheme.backgroundColor,
+              body: _buildBody(context)),
+        ));
   }
 
   Widget _buildBody(BuildContext context) {

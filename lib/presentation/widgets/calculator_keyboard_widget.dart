@@ -12,12 +12,12 @@ class CalculatorKeyboardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.only(bottom: kDefaultMargin + 20),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
               topRight: Radius.circular(25),
               topLeft: Radius.circular(25),
             ),
-            color: Color(0xFFEEEEEE)),
+            color: AppTheme.backgroundCardColor),
         child: Column(children: _buildCustomGridView()),
       );
 
@@ -57,7 +57,9 @@ class CalculatorKeyboardWidget extends StatelessWidget {
               keyboardViewModel.key,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: keyboardViewModel.lightColor,
+                color: AppTheme.isDark
+                    ? keyboardViewModel.darkColor
+                    : keyboardViewModel.lightColor,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
