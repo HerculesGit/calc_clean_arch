@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class KeyboardViewModel {
   final String key;
-  final Color lightColor;
-  final Color darkColor;
   final bool isClearButton;
   final bool enabled;
+
+  final Color lightColor;
+  final Color darkColor;
 
   KeyboardViewModel({
     required this.key,
@@ -14,6 +15,8 @@ class KeyboardViewModel {
     this.isClearButton = false,
     this.enabled = true,
   });
+
+  bool get isANumber => int.tryParse(key) != null;
 }
 
 final keyboards = [

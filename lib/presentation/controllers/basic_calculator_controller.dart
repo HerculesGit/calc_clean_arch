@@ -7,7 +7,9 @@ import '../services/basic_calculator_service.dart';
 class BasicCalculatorController extends ChangeNotifier {
   final BasicCalculatorService _service;
 
-  BasicCalculatorController(this._service);
+  BasicCalculatorController(this._service) {
+    _clearDisplay();
+  }
 
   String result = '';
   String inputTerm = '';
@@ -18,8 +20,12 @@ class BasicCalculatorController extends ChangeNotifier {
       return;
     }
 
+    if (inputTerm.startsWith('0') && keyTapped.key == '0') {
+      return;
+    }
+
     String newCharacter = keyTapped.key;
-    _normalizeInputTerm(newCharacter);
+    _normalizeInputTerm(keyTapped);
 
     int lastIndex = ArithmeticSymbol.values
         .lastIndexWhere((symbol) => newCharacter == symbol.label);
@@ -29,7 +35,7 @@ class BasicCalculatorController extends ChangeNotifier {
   }
 
   void _clearDisplay() {
-    result = '';
+    result = '0';
     inputTerm = '';
     notifyListeners();
   }
@@ -39,12 +45,22 @@ class BasicCalculatorController extends ChangeNotifier {
     notifyListeners();
   }
 
-  _normalizeInputTerm(final String character) {
-    _addZeroDigitIfTermIsEmpty(character);
+  _normalizeInputTerm(final KeyboardViewModel keyTapped) {
+    String character = keyTapped.key;
+    _addZeroDigitIfFirstCharacterIsAOperator(character);
     _removeLastArithmeticSymbol(character);
 
     inputTerm += character;
+    _replaceFirstZeroToAnotherNumber(keyTapped);
     notifyListeners();
+  }
+
+  _replaceFirstZeroToAnotherNumber(final KeyboardViewModel keyTapped) {
+    if (inputTerm.startsWith('0') &&
+        inputTerm.length == 1 &&
+        keyTapped.isANumber) {
+      inputTerm = keyTapped.key;
+    }
   }
 
   _removeLastArithmeticSymbol(final String character) {
@@ -64,7 +80,7 @@ class BasicCalculatorController extends ChangeNotifier {
     }
   }
 
-  _addZeroDigitIfTermIsEmpty(final String character) {
+  _addZeroDigitIfFirstCharacterIsAOperator(final String character) {
     final firstIndex = ArithmeticSymbol.values
         .indexWhere((symbol) => symbol.label == character);
     final bool firstCharacterIsASymbol = firstIndex >= 0;
