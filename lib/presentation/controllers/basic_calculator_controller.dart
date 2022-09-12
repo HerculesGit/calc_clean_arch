@@ -14,7 +14,7 @@ class BasicCalculatorController extends ChangeNotifier {
   String result = '';
   String inputTerm = '';
 
-  changeTerms(final KeyboardViewModel keyTapped) {
+  Future changeTerms(final KeyboardViewModel keyTapped) async {
     if (keyTapped.isClearButton) {
       _clearDisplay();
       return;
@@ -30,7 +30,7 @@ class BasicCalculatorController extends ChangeNotifier {
     int lastIndex = ArithmeticSymbol.values
         .lastIndexWhere((symbol) => newCharacter == symbol.label);
     if (lastIndex == -1) {
-      _automaticCalculate(newCharacter);
+      await _automaticCalculate(newCharacter);
     }
   }
 
@@ -49,9 +49,9 @@ class BasicCalculatorController extends ChangeNotifier {
     String character = keyTapped.key;
     _addZeroDigitIfFirstCharacterIsAOperator(character);
     _removeLastArithmeticSymbol(character);
+    _replaceFirstZeroToAnotherNumber(keyTapped);
 
     inputTerm += character;
-    _replaceFirstZeroToAnotherNumber(keyTapped);
     notifyListeners();
   }
 
@@ -59,7 +59,7 @@ class BasicCalculatorController extends ChangeNotifier {
     if (inputTerm.startsWith('0') &&
         inputTerm.length == 1 &&
         keyTapped.isANumber) {
-      inputTerm = keyTapped.key;
+      inputTerm = '';
     }
   }
 
