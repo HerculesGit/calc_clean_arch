@@ -14,9 +14,15 @@ class BasicCalculatorController extends ChangeNotifier {
   String result = '';
   String inputTerm = '';
 
-  Future changeTerms(final KeyboardViewModel keyTapped) async {
+  Future didKeyPressed(final KeyboardViewModel keyTapped) async {
     if (keyTapped.isClearButton) {
       _clearDisplay();
+      return;
+    }
+
+    if (keyTapped.key == '=') {
+      /// TODO: DO ANIMATION
+      _service.saveHistory('$inputTerm\n=$result');
       return;
     }
 

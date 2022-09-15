@@ -116,6 +116,6 @@ final keyboards = [
     key: '=',
     lightColor: Colors.orange,
     darkColor: Colors.orange,
-    enabled: false,
+    enabled: true,
   ),
 ];

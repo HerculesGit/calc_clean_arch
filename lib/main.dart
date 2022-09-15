@@ -1,5 +1,6 @@
 import 'package:calc_clean_arch/presentation/controllers/app_theme_controller.dart';
 import 'package:calc_clean_arch/presentation/controllers/basic_calculator_controller.dart';
+import 'package:calc_clean_arch/presentation/controllers/basic_history_calculator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,10 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => BasicCalculatorController(injector()),
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => BasicHistoryCalculatorController(injector()),
         ),
       ],
       child: const MyApp(),

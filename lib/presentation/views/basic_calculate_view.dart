@@ -44,7 +44,7 @@ class BasicCalculateView extends StatelessWidget {
                 height: constraints.maxHeight * .6,
                 width: constraints.maxWidth,
                 child: CalculatorKeyboardWidget(
-                  onButtonTapped: (key) => controller.changeTerms(key),
+                  onButtonTapped: (key) => controller.didKeyPressed(key),
                 ),
               ),
             ],

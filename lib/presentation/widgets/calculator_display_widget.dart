@@ -1,3 +1,4 @@
+import 'package:calc_clean_arch/config/routes/routes_contants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +27,23 @@ class CalculatorDisplayWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [_buildChangeThemeButton(context)]),
+            children: [
+              const Spacer(),
+              Expanded(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  _buildChangeThemeButton(context),
+                ]),
+              ),
+              Expanded(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildHistoryButton(context),
+                ],
+              )),
+            ],
+          ),
           const Spacer(),
           Text(term, style: TextStyle(fontSize: 20, color: AppTheme.textColor)),
           Padding(
@@ -79,6 +95,25 @@ class CalculatorDisplayWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildHistoryButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          horizontal: kDefaultMargin, vertical: kDefaultMargin / 2),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: AppTheme.backgroundCardColor,
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => _goToHistory(context),
+            child: Icon(Icons.history, color: AppTheme.enabledAccentColor),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildButton(BuildContext context,
       {required IconData icon,
       required bool enabled,
@@ -93,4 +128,7 @@ class CalculatorDisplayWidget extends StatelessWidget {
       ),
     );
   }
+
+  _goToHistory(BuildContext context) =>
+      Navigator.pushNamed(context, kBasicHistoryCalculateView);
 }

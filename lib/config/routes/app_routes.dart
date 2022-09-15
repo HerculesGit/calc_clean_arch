@@ -1,3 +1,4 @@
+import 'package:calc_clean_arch/presentation/views/history_calculate_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../presentation/views/basic_calculate_view.dart';
@@ -8,6 +9,8 @@ class AppRoutes {
     switch (settings.name) {
       case kBasicCalculateView:
         return _materialRoute(const BasicCalculateView());
+      case kBasicHistoryCalculateView:
+        return _materialRoute(const HistoryCalculateView());
       default:
         return _materialRoute(Scaffold(
           body: Column(
