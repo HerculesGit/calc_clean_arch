@@ -18,19 +18,21 @@ class BasicCalculatorController extends ChangeNotifier {
   String inputTerm = '';
 
   Future didKeyPressed(final KeyboardViewModel keyTapped) async {
-    if (keyTapped.isClearButton) {
+    if (clearIsButtonPressed(keyTapped)) {
       _clearDisplay();
       return;
     }
 
-    if (keyTapped.key == '=') {
+    if (equalsButtonIsPressed(keyTapped)) {
       didEqualsPressed();
       return;
     }
 
-    if (inputTerm.startsWith('0') && keyTapped.key == '0') {
+    if (ignoreKeyPressed(keyTapped)) {
       return;
     }
+
+    if (historyWasSaved) _clearDisplay();
 
     String newCharacter = keyTapped.key;
     _normalizeInputTerm(keyTapped);
@@ -38,11 +40,20 @@ class BasicCalculatorController extends ChangeNotifier {
     int lastIndex = ArithmeticSymbol.values
         .lastIndexWhere((symbol) => newCharacter == symbol.label);
     if (lastIndex == -1) {
-      animateResult = false;
-      historyWasSaved = false;
       await _automaticCalculate(newCharacter);
     }
+    animateResult = false;
+    historyWasSaved = false;
   }
+
+  bool clearIsButtonPressed(final KeyboardViewModel keyTapped) =>
+      keyTapped.isClearButton;
+
+  bool equalsButtonIsPressed(final KeyboardViewModel keyTapped) =>
+      keyTapped.key == '=';
+
+  bool ignoreKeyPressed(final KeyboardViewModel keyTapped) =>
+      inputTerm.startsWith('0') && keyTapped.key == '0';
 
   Future<void> didEqualsPressed() async {
     if (!historyWasSaved) {
