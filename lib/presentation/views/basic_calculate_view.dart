@@ -36,6 +36,7 @@ class BasicCalculateView extends StatelessWidget {
                   height: constraints.maxHeight * .4,
                   width: constraints.maxWidth,
                   child: CalculatorDisplayWidget(
+                    animateResult: controller.animateResult,
                     term: controller.inputTerm,
                     result: controller.result,
                   )),

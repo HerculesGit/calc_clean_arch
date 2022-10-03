@@ -8,15 +8,22 @@ import '../controllers/app_theme_controller.dart';
 class CalculatorDisplayWidget extends StatelessWidget {
   final String result;
   final String term;
+  final bool animateResult;
 
-  const CalculatorDisplayWidget(
-      {Key? key, required this.result, required this.term})
-      : super(key: key);
+  const CalculatorDisplayWidget({
+    Key? key,
+    required this.result,
+    required this.term,
+    required this.animateResult,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => _buildDisplay(context);
 
   Widget _buildDisplay(BuildContext context) {
+    const duration = Duration(milliseconds: 300);
+    const curve = Curves.easeInOutSine;
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: kDefaultMargin,
@@ -45,15 +52,27 @@ class CalculatorDisplayWidget extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          Text(term, style: TextStyle(fontSize: 20, color: AppTheme.textColor)),
+          AnimatedDefaultTextStyle(
+            duration: duration,
+            curve: curve,
+            style: animateResult
+                ? AppTheme.displayTermTextStyle
+                : AppTheme.displayResultTextStyle,
+            child: Text(term),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: kDefaultMargin / 4),
-            child: Text(
-              '${result.isNotEmpty ? '=' : ''}$result',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 45.0,
-                color: AppTheme.textColor,
+            child: AnimatedDefaultTextStyle(
+              curve: curve,
+              duration: duration,
+              style: animateResult
+                  ? AppTheme.displayResultTextStyle
+                  : AppTheme.displayTermTextStyle,
+              child: Text(
+                '${result.isNotEmpty ? '=' : ''}$result',
+                style: animateResult
+                    ? AppTheme.displayResultTextStyle
+                    : AppTheme.displayTermTextStyle,
               ),
             ),
           ),

@@ -7,6 +7,9 @@ import '../services/basic_calculator_service.dart';
 class BasicCalculatorController extends ChangeNotifier {
   final BasicCalculatorService _service;
 
+  bool historyWasSaved = false;
+  bool animateResult = true;
+
   BasicCalculatorController(this._service) {
     _clearDisplay();
   }
@@ -21,8 +24,7 @@ class BasicCalculatorController extends ChangeNotifier {
     }
 
     if (keyTapped.key == '=') {
-      /// TODO: DO ANIMATION
-      _service.saveHistory('$inputTerm\n=$result');
+      didEqualsPressed();
       return;
     }
 
@@ -36,13 +38,26 @@ class BasicCalculatorController extends ChangeNotifier {
     int lastIndex = ArithmeticSymbol.values
         .lastIndexWhere((symbol) => newCharacter == symbol.label);
     if (lastIndex == -1) {
+      animateResult = false;
+      historyWasSaved = false;
       await _automaticCalculate(newCharacter);
     }
+  }
+
+  Future<void> didEqualsPressed() async {
+    if (!historyWasSaved) {
+      _service.saveHistory('$inputTerm\n=$result');
+      animateResult = true;
+      notifyListeners();
+    }
+    historyWasSaved = true;
   }
 
   void _clearDisplay() {
     result = '0';
     inputTerm = '';
+    historyWasSaved = false;
+    animateResult = true;
     notifyListeners();
   }
 
