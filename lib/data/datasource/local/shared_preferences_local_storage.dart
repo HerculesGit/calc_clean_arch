@@ -4,7 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesLocalStorage implements LocalStorage {
   late SharedPreferences _prefs;
 
-  Future<void> init() async => _prefs = await SharedPreferences.getInstance();
+  Future<void> init({final bool testMode = false}) async {
+    if (testMode) SharedPreferences.setMockInitialValues({});
+    _prefs = await SharedPreferences.getInstance();
+  }
 
   @override
   Future<String?> get(String key, {String? defaultValue}) async {

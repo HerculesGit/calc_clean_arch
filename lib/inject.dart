@@ -14,9 +14,10 @@ import 'presentation/services/basic_calculator_service.dart';
 
 GetIt injector = GetIt.instance;
 
-Future<void> initializeDependencies() async {
+Future<void> initializeDependencies({final bool testMode = false}) async {
+  if (testMode) GetIt.instance.reset();
   final sharedPrefs = SharedPreferencesLocalStorage();
-  await sharedPrefs.init();
+  await sharedPrefs.init(testMode: testMode);
 
   injector.registerSingleton<HistoryRepository>(
       HistoryRepositoryDataSource(sharedPrefs));
