@@ -93,6 +93,7 @@ class CalculatorDisplayWidget extends StatelessWidget {
       child: Row(
         children: [
           _buildButton(
+            key: const Key('sunny'),
             context,
             icon: Icons.sunny,
             enabled: appTheme.isDark == false,
@@ -102,6 +103,7 @@ class CalculatorDisplayWidget extends StatelessWidget {
           ),
           const SizedBox(width: kDefaultMargin),
           _buildButton(
+            key: const Key('nightlight_outlined'),
             enabled: appTheme.isDark == true,
             context,
             icon: Icons.nightlight_outlined,
@@ -135,9 +137,11 @@ class CalculatorDisplayWidget extends StatelessWidget {
 
   Widget _buildButton(BuildContext context,
       {required IconData icon,
+        required Key key,
       required bool enabled,
       required Function onTouch}) {
     return GestureDetector(
+      key: key,
       onTap: () => onTouch(),
       child: AbsorbPointer(
         child: Icon(icon,

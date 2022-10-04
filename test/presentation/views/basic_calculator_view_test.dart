@@ -153,4 +153,72 @@ void main() {
         await tester.pump();
         expect(find.text('12+3+1+'), findsOneWidget);
       });
+
+  testWidgets(
+      'should changes the text color to white when the theme is dark mode',
+      (tester) async {
+    await tester.pumpWidget(sut);
+
+    Finder moonIcon = find.byKey(const Key('nightlight_outlined'));
+    expect(moonIcon, findsOneWidget);
+    await tester.tap(moonIcon, warnIfMissed: false);
+
+    await tester.pump();
+    final resultWidget = find.byWidgetPredicate((widget) {
+      return widget is Text &&
+          widget.data == '=0' &&
+          widget.style?.color == Colors.white;
+    });
+
+    expect(resultWidget, findsOneWidget);
+  });
+  testWidgets(
+      'should changes the text color to black when the theme is light mode',
+      (tester) async {
+    await tester.pumpWidget(sut);
+
+    Finder sunnyIcon = find.byKey(const Key('sunny'));
+    expect(sunnyIcon, findsOneWidget);
+    await tester.tap(sunnyIcon, warnIfMissed: false);
+
+    await tester.pump();
+    final resultWidget = find.byWidgetPredicate((widget) {
+      return widget is Text &&
+          widget.data == '=0' &&
+          widget.style?.color == const Color(0xFF272831);
+    });
+
+    expect(resultWidget, findsOneWidget);
+  });
+
+  testWidgets('should changes theme mode and display the correct text colors',
+      (tester) async {
+    await tester.pumpWidget(sut);
+
+    Finder moonIcon = find.byKey(const Key('nightlight_outlined'));
+    Finder sunnyIcon = find.byKey(const Key('sunny'));
+
+    expect(moonIcon, findsOneWidget);
+    expect(sunnyIcon, findsOneWidget);
+    await tester.tap(moonIcon, warnIfMissed: false);
+    await tester.pump();
+
+    Finder resultWidget = find.byWidgetPredicate((widget) {
+      return widget is Text &&
+          widget.data == '=0' &&
+          widget.style?.color == Colors.white;
+    });
+    expect(resultWidget, findsOneWidget);
+
+    await tester.tap(sunnyIcon, warnIfMissed: false);
+    await tester.pump();
+
+    resultWidget = find.byWidgetPredicate((widget) {
+      return widget is Text &&
+          widget.data == '=0' &&
+          widget.style?.color == const Color(0xFF272831);
+    });
+
+    expect(resultWidget, findsOneWidget);
+  });
 }

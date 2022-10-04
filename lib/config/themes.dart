@@ -41,9 +41,12 @@ class AppTheme {
     return (_isDark) ? const Color(0xFFFFFFFF) : const Color(0xFF272831);
   }
 
-  static final displayTermTextStyle =
-      TextStyle(fontSize: 20, color: AppTheme.textColor);
+  static get displayTermTextStyle {
+    return TextStyle(fontSize: 20, color: AppTheme.textColor);
+  }
 
-  static final displayResultTextStyle = TextStyle(
-      fontWeight: FontWeight.bold, fontSize: 45.0, color: AppTheme.textColor);
+  static get displayResultTextStyle {
+    return TextStyle(
+        fontWeight: FontWeight.bold, fontSize: 45.0, color: AppTheme.textColor);
+  }
 }
