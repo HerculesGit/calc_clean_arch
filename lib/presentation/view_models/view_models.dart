@@ -39,7 +39,7 @@ final keyboards = [
     enabled: false,
   ),
   KeyboardViewModel(
-    key: 'º|º',
+    key: '\u00F7',
     lightColor: Colors.orange,
     darkColor: Colors.orange,
     enabled: false,
