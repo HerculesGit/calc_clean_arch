@@ -1,6 +1,7 @@
 import 'package:calc_clean_arch/data/repositories/history_repository.dart';
 import 'package:calc_clean_arch/domain/repositories/history_repository.dart';
 import 'package:calc_clean_arch/domain/usecases/get_histories_usecase.dart';
+import 'package:calc_clean_arch/domain/usecases/ignore_new_zero_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/save_history_usecase.dart';
 import 'package:get_it/get_it.dart';
 
@@ -28,6 +29,9 @@ Future<void> initializeDependencies({final bool testMode = false}) async {
   injector.registerSingleton<ConvertStringToArithmeticOperationsUseCase>(
       ConvertStringToArithmeticOperationsUseCase());
 
+  injector.registerSingleton<IgnoreNewZeroUseCase>(
+      IgnoreNewZeroUseCase());
+
   injector
       .registerSingleton<SaveHistoryUseCase>(SaveHistoryUseCase(injector()));
   injector
@@ -40,6 +44,6 @@ Future<void> initializeDependencies({final bool testMode = false}) async {
   injector
       .registerSingleton<GetAppThemeUseCase>(GetAppThemeUseCase(injector()));
 
-  injector.registerSingleton<BasicCalculatorService>(
-      BasicCalculatorService(injector(), injector(), injector(), injector()));
+  injector.registerSingleton<BasicCalculatorService>(BasicCalculatorService(
+      injector(), injector(), injector(), injector(), injector()));
 }

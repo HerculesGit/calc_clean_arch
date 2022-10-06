@@ -1,5 +1,7 @@
 import 'package:calc_clean_arch/domain/entity/history.dart';
 import 'package:calc_clean_arch/domain/usecases/get_histories_usecase.dart';
+import 'package:calc_clean_arch/domain/usecases/ignore_new_zero_usecase.dart';
+import 'package:flutter/material.dart';
 
 import '../../domain/usecases/calculate_arithmetic_operation_usecase.dart';
 import '../../domain/usecases/convert_string_to_arithmetic_operations_usecase.dart';
@@ -10,12 +12,15 @@ class BasicCalculatorService {
   final ConvertStringToArithmeticOperationsUseCase
       _convertStringToArithmeticUseCase;
 
+  final IgnoreNewZeroUseCase _ignoreNewZeroUseCase;
+
   final SaveHistoryUseCase _saveHistoryUseCase;
   final GetHistoriesUseCase _getHistoriesUseCase;
 
   BasicCalculatorService(
       this._calcUseCase,
       this._convertStringToArithmeticUseCase,
+      this._ignoreNewZeroUseCase,
       this._saveHistoryUseCase,
       this._getHistoriesUseCase);
 
@@ -34,4 +39,9 @@ class BasicCalculatorService {
 
   Future<List<HistoryEntity>> getHistories() async =>
       await _getHistoriesUseCase.call(params: null);
+
+  ignoreZero({required String oldTerm, required String keyPressed}) {
+    return _ignoreNewZeroUseCase(
+        params: Term(oldTerm: oldTerm, newKeyPressed: keyPressed));
+  }
 }

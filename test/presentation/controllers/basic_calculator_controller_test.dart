@@ -2,6 +2,7 @@ import 'package:calc_clean_arch/domain/repositories/history_repository.dart';
 import 'package:calc_clean_arch/domain/usecases/calculate_arithmetic_operation_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/convert_string_to_arithmetic_operations_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/get_histories_usecase.dart';
+import 'package:calc_clean_arch/domain/usecases/ignore_new_zero_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/save_history_usecase.dart';
 import 'package:calc_clean_arch/presentation/controllers/basic_calculator_controller.dart';
 import 'package:calc_clean_arch/presentation/services/basic_calculator_service.dart';
@@ -23,7 +24,9 @@ void main() {
     sut = BasicCalculatorController(BasicCalculatorService(
         CalculateArithmeticOperationUseCase(),
         ConvertStringToArithmeticOperationsUseCase(),
-        SaveHistoryUseCase(HistoryRepositorySpy()), GetHistoriesUseCase(HistoryRepositorySpy())));
+        IgnoreNewZeroUseCase(),
+        SaveHistoryUseCase(HistoryRepositorySpy()),
+        GetHistoriesUseCase(HistoryRepositorySpy())));
 
     lightColor = Colors.orange;
     darkColor = Colors.red;
@@ -87,5 +90,54 @@ void main() {
 
     expect(sut.result, '0');
     expect(sut.inputTerm, '0');
+  });
+
+  test('should replace the last zero to new number in term 0+0', () async {
+    final keyboardZero = KeyboardViewModel(
+        key: '0', lightColor: lightColor, darkColor: darkColor);
+    final keyboardOne = KeyboardViewModel(
+        key: '1', lightColor: lightColor, darkColor: darkColor);
+    final keyboardPlus = KeyboardViewModel(
+        key: '+', lightColor: lightColor, darkColor: darkColor);
+
+    await sut.didKeyPressed(keyboardZero);
+    await sut.didKeyPressed(keyboardPlus);
+
+    await sut.didKeyPressed(keyboardZero);
+
+    await sut.didKeyPressed(keyboardOne);
+
+    expect(sut.inputTerm, '0+1');
+
+    await sut.didKeyPressed(acKeyboard);
+    expect(sut.inputTerm, '');
+
+    ///
+    await sut.didKeyPressed(keyboardZero);
+    await sut.didKeyPressed(keyboardPlus);
+
+    await sut.didKeyPressed(keyboardZero);
+
+    await sut.didKeyPressed(keyboardOne);
+    await sut.didKeyPressed(keyboardZero);
+    await sut.didKeyPressed(keyboardZero);
+    expect(sut.inputTerm, '0+100');
+
+    await sut.didKeyPressed(keyboardOne);
+    expect(sut.inputTerm, '0+1001');
+
+    await sut.didKeyPressed(acKeyboard);
+    expect(sut.inputTerm, '');
+
+    ///
+    await sut.didKeyPressed(keyboardZero);
+    await sut.didKeyPressed(keyboardPlus);
+    await sut.didKeyPressed(keyboardOne);
+    await sut.didKeyPressed(keyboardZero);
+
+    await sut.didKeyPressed(keyboardPlus);
+    await sut.didKeyPressed(keyboardZero);
+    await sut.didKeyPressed(keyboardZero);
+    expect(sut.inputTerm, '0+10+0');
   });
 }

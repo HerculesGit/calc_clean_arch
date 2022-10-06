@@ -2,6 +2,7 @@ import 'package:calc_clean_arch/domain/repositories/history_repository.dart';
 import 'package:calc_clean_arch/domain/usecases/calculate_arithmetic_operation_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/convert_string_to_arithmetic_operations_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/get_histories_usecase.dart';
+import 'package:calc_clean_arch/domain/usecases/ignore_new_zero_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/save_history_usecase.dart';
 import 'package:calc_clean_arch/presentation/services/basic_calculator_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,7 @@ void main() {
       BasicCalculatorService service = BasicCalculatorService(
           CalculateArithmeticOperationUseCase(),
           ConvertStringToArithmeticOperationsUseCase(),
+          IgnoreNewZeroUseCase(),
           SaveHistoryUseCase(HistoryRepositorySpy()),
           GetHistoriesUseCase(HistoryRepositorySpy()));
 

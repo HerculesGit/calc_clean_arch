@@ -28,14 +28,14 @@ class BasicCalculatorController extends ChangeNotifier {
       return;
     }
 
-    if (ignoreKeyPressed(keyTapped)) {
-      return;
-    }
-
     if (historyWasSaved) _clearDisplay();
 
     String newCharacter = keyTapped.key;
     _normalizeInputTerm(keyTapped);
+
+    if (_service.ignoreZero(oldTerm: inputTerm, keyPressed: keyTapped.key)) {
+      return;
+    }
 
     int lastIndex = ArithmeticSymbol.values
         .lastIndexWhere((symbol) => newCharacter == symbol.label);
@@ -51,9 +51,6 @@ class BasicCalculatorController extends ChangeNotifier {
 
   bool equalsButtonIsPressed(final KeyboardViewModel keyTapped) =>
       keyTapped.key == '=';
-
-  bool ignoreKeyPressed(final KeyboardViewModel keyTapped) =>
-      inputTerm.startsWith('0') && keyTapped.key == '0';
 
   Future<void> didEqualsPressed() async {
     if (!historyWasSaved) {
@@ -82,6 +79,7 @@ class BasicCalculatorController extends ChangeNotifier {
     _addZeroDigitIfFirstCharacterIsAOperator(character);
     _removeLastArithmeticSymbol(character);
     _replaceFirstZeroToAnotherNumber(keyTapped);
+    _replaceLastZeroToNewNumber(keyTapped);
 
     inputTerm += character;
     notifyListeners();
@@ -93,6 +91,31 @@ class BasicCalculatorController extends ChangeNotifier {
         keyTapped.isANumber) {
       inputTerm = '';
     }
+  }
+
+  _replaceLastZeroToNewNumber(final KeyboardViewModel keyTapped) {
+    if (inputTerm.endsWith('0') &&
+        inputTerm.length > 2 &&
+        keyTapped.isANumber) {
+      int lastSymbolPosition = _getLastSymbolPosition();
+      if (lastSymbolPosition >= 0 &&
+          inputTerm.characters.elementAt(lastSymbolPosition + 1) == '0') {
+        inputTerm = inputTerm.substring(0, inputTerm.length - 1);
+      }
+    }
+  }
+
+  int _getLastSymbolPosition() {
+    int position = inputTerm.characters.toList().lastIndexWhere((character) {
+      int index = ArithmeticSymbol.values
+          .lastIndexWhere((symbol) => symbol.label == character);
+
+      if (index >= 0) return true;
+
+      return false;
+    });
+
+    return position;
   }
 
   _removeLastArithmeticSymbol(final String character) {
