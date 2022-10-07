@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/themes.dart';
-import '../view_models/view_models.dart';
+import '../view_models/keyboard_view_model.dart';
 
 class CalculatorKeyboardWidget extends StatelessWidget {
   final Function(KeyboardViewModel key) onButtonTapped;

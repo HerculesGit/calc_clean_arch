@@ -6,7 +6,7 @@ import 'package:calc_clean_arch/domain/usecases/ignore_new_zero_usecase.dart';
 import 'package:calc_clean_arch/domain/usecases/save_history_usecase.dart';
 import 'package:calc_clean_arch/presentation/controllers/basic_calculator_controller.dart';
 import 'package:calc_clean_arch/presentation/services/basic_calculator_service.dart';
-import 'package:calc_clean_arch/presentation/view_models/view_models.dart';
+import 'package:calc_clean_arch/presentation/view_models/keyboard_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

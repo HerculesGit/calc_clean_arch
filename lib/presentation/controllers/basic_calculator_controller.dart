@@ -1,5 +1,5 @@
 import 'package:calc_clean_arch/domain/enums/arithmetic_symbol.dart';
-import 'package:calc_clean_arch/presentation/view_models/view_models.dart';
+import 'package:calc_clean_arch/presentation/view_models/keyboard_view_model.dart';
 import 'package:flutter/material.dart';
 
 import '../services/basic_calculator_service.dart';
