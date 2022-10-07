@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../config/themes.dart';
 import '../widgets/calculator_display_widget.dart';
+import '../widgets/change_calculator_theme_button.dart';
 
 class BasicCalculateView extends StatelessWidget {
   const BasicCalculateView({Key? key}) : super(key: key);
@@ -31,15 +32,14 @@ class BasicCalculateView extends StatelessWidget {
           print('basicCalculator.inputTerm ${controller.inputTerm}');
           return Column(
             children: [
-              SizedBox(
-                  // color: Colors.red,
-                  height: constraints.maxHeight * .4,
-                  width: constraints.maxWidth,
-                  child: CalculatorDisplayWidget(
-                    animateResult: controller.animateResult,
-                    term: controller.inputTerm,
-                    result: controller.result,
-                  )),
+              const ChangeCalculatorThemeButton(),
+              Expanded(
+                child: CalculatorDisplayWidget(
+                  animateResult: controller.animateResult,
+                  term: controller.inputTerm,
+                  result: controller.result,
+                ),
+              ),
               SizedBox(
                 // color: Colors.green,
                 height: constraints.maxHeight * .6,
