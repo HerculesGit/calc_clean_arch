@@ -11,7 +11,6 @@ class CalculatorKeyboardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.only(bottom: kDefaultMargin + 20),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(25),

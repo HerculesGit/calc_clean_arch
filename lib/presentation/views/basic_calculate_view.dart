@@ -40,10 +40,7 @@ class BasicCalculateView extends StatelessWidget {
                   result: controller.result,
                 ),
               ),
-              SizedBox(
-                // color: Colors.green,
-                height: constraints.maxHeight * .6,
-                width: constraints.maxWidth,
+              Expanded(
                 child: CalculatorKeyboardWidget(
                   onButtonTapped: (key) => controller.didKeyPressed(key),
                 ),
