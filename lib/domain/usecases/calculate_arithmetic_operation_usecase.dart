@@ -5,6 +5,13 @@ import 'addition_use_case.dart';
 import 'multiplication_use_case.dart';
 import 'subtraction_use_case.dart';
 
+class FoundedSymbol {
+  final int index;
+  final ArithmeticSymbol arithmeticSymbol;
+
+  FoundedSymbol({required this.index, required this.arithmeticSymbol});
+}
+
 class CalculateArithmeticOperationUseCase
     implements UseCase<List<String>, String> {
   late List<String> arithmeticOperations;
@@ -26,29 +33,13 @@ class CalculateArithmeticOperationUseCase
       calcArithmeticOperations();
     }
 
-
-
-    final map =  searchFirstAnySymbol();
-    if (map != null) {
+    final foundedSymbol = _searchFirstAnySymbol();
+    if (foundedSymbol != null) {
       calcValuesFromSymbol(
-          symbolIndex: map['index'], arithmeticSymbol: map['symbol']);
+          symbolIndex: foundedSymbol.index,
+          arithmeticSymbol: foundedSymbol.arithmeticSymbol);
       calcArithmeticOperations();
     }
-
-    // index = searchFirstAnySymbol() -1;
-    // if (index >= 0) {
-    //   calcValuesFromSymbol(
-    //       symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.sum);
-    //   calcArithmeticOperations();
-    // }
-    //
-    // index = searchSymbol(ArithmeticSymbol.difference);
-    // if (index >= 0) {
-    //   calcValuesFromSymbol(
-    //       symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.difference);
-    //   calcArithmeticOperations();
-    // }
-
     return arithmeticOperations.first;
   }
 
@@ -88,18 +79,17 @@ class CalculateArithmeticOperationUseCase
   int searchSymbol(ArithmeticSymbol arithmeticSymbol) =>
       arithmeticOperations.indexOf(arithmeticSymbol.label);
 
-  ///
-  Map? searchFirstAnySymbol() {
+  FoundedSymbol? _searchFirstAnySymbol() {
     for (int characterPosition = 0;
         arithmeticOperations.length > characterPosition;
         characterPosition++) {
       for (var symbol in ArithmeticSymbol.values) {
         if (arithmeticOperations[characterPosition] == symbol.label) {
-          return {'symbol': symbol, 'index' : characterPosition};
+          return FoundedSymbol(
+              index: characterPosition, arithmeticSymbol: symbol);
         }
       }
     }
-
     return null;
   }
 
