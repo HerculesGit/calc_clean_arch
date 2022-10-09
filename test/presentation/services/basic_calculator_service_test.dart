@@ -20,14 +20,11 @@ void main() {
           SaveHistoryUseCase(HistoryRepositorySpy()),
           GetHistoriesUseCase(HistoryRepositorySpy()));
 
-      String result = await service.calculate('2+3+4');
-      expect(result, '9');
-
-      result = await service.calculate('2+3+4x2');
-      expect(result, '13');
-
-      result = await service.calculate('0-1-0-2');
-      expect(result, '-3');
+      String result = '';
+      result = await service.calculate('2x2-4-3-5+10');
+      expect(result, '2');
+      result = await service.calculate('8+2x1x0x8x0x1-52528x8-3+7x86573');
+      expect(result, '185792');
     });
   });
 }

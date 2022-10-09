@@ -26,19 +26,28 @@ class CalculateArithmeticOperationUseCase
       calcArithmeticOperations();
     }
 
-    index = searchSymbol(ArithmeticSymbol.sum);
-    if (index >= 0) {
+
+
+    final map =  searchFirstAnySymbol();
+    if (map != null) {
       calcValuesFromSymbol(
-          symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.sum);
+          symbolIndex: map['index'], arithmeticSymbol: map['symbol']);
       calcArithmeticOperations();
     }
 
-    index = searchSymbol(ArithmeticSymbol.difference);
-    if (index >= 0) {
-      calcValuesFromSymbol(
-          symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.difference);
-      calcArithmeticOperations();
-    }
+    // index = searchFirstAnySymbol() -1;
+    // if (index >= 0) {
+    //   calcValuesFromSymbol(
+    //       symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.sum);
+    //   calcArithmeticOperations();
+    // }
+    //
+    // index = searchSymbol(ArithmeticSymbol.difference);
+    // if (index >= 0) {
+    //   calcValuesFromSymbol(
+    //       symbolIndex: index, arithmeticSymbol: ArithmeticSymbol.difference);
+    //   calcArithmeticOperations();
+    // }
 
     return arithmeticOperations.first;
   }
@@ -78,6 +87,21 @@ class CalculateArithmeticOperationUseCase
 
   int searchSymbol(ArithmeticSymbol arithmeticSymbol) =>
       arithmeticOperations.indexOf(arithmeticSymbol.label);
+
+  ///
+  Map? searchFirstAnySymbol() {
+    for (int characterPosition = 0;
+        arithmeticOperations.length > characterPosition;
+        characterPosition++) {
+      for (var symbol in ArithmeticSymbol.values) {
+        if (arithmeticOperations[characterPosition] == symbol.label) {
+          return {'symbol': symbol, 'index' : characterPosition};
+        }
+      }
+    }
+
+    return null;
+  }
 
   /// e.g [[1,x,2,+,3]] <br>
   /// [symbolIndex] = 1<br>
